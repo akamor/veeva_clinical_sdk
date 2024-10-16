@@ -8,7 +8,7 @@ class VeevaDocument:
         self.doc_id = doc_id
         self.client = client
 
-    def download(self):
+    def download(self) -> bytes:
         with requests.Session() as session:
-            file_content = self.client.http_get_file(self.doc_id, session)
-            print(file_content)
+            return self.client.http_get_file(self.doc_id, session)
+            
