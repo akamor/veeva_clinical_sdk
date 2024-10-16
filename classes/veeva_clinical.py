@@ -1,5 +1,6 @@
-from typing import Optional
+from typing import Optional, List
 import requests
+from classes.veeva_document import VeevaDocument
 from classes.httpclient import HttpClient
 
 class VeevaClinical:
@@ -13,7 +14,7 @@ class VeevaClinical:
         return HttpClient.login(vault_dns, user, password)
     
 
-    def list_all_files(self):
+    def list_all_files(self) -> List[VeevaDocument]:
         with requests.Session() as session:
             result = self.client.http_get('/objects/documents', session=session)
             if result['responseStatus'] != 'SUCCESS':
@@ -23,4 +24,4 @@ class VeevaClinical:
                     raise Exception('Failed to retrieve documents')
             
             files = result['documents']
-            return [{'file_name':file['filename__v'], 'doc_id': file['id']} for file in files]        
+            return [VeevaDocument(file['document']['filename__v'], file['document']['id'], self.client) for file in files]        
