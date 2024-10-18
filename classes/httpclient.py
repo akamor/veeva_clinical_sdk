@@ -76,9 +76,13 @@ class HttpClient:
     
     def http_post(self, endpoint: str, params={}, data={}, files={}, additional_headers={}, timeout_seconds: Optional[int] = None):
     
+        
+
         endpoint = endpoint.removesuffix('/').removeprefix('/')
         url = f"{self.base_url}/api/{HttpClient.api_version()}/{endpoint}"
 
+        req = requests.Request('POST', url, headers={**self.headers, **additional_headers}, params=params, data=data,files=files)
+        self.pretty_print_post(req)
         try:
             res = requests.post(
                 url,
@@ -101,3 +105,19 @@ class HttpClient:
                 return res.text
         else:
             return None
+
+    def pretty_print_POST(self, req):
+        """
+        At this point it is completely built and ready
+        to be fired; it is "prepared".
+
+        However pay attention at the formatting used in 
+        this function because it is programmed to be pretty 
+        printed and may differ from the actual request.
+        """
+        print('{}\n{}\r\n{}\r\n\r\n{}'.format(
+            '-----------START-----------',
+            req.method + ' ' + req.url,
+            '\r\n'.join('{}: {}'.format(k, v) for k, v in req.headers.items()),
+            req.body,
+        ))
