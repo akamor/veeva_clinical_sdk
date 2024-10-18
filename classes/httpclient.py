@@ -74,11 +74,14 @@ class HttpClient:
 
         return res.json()
     
-    def http_post(self, url, params={}, data={}, files={}, additional_headers={}, timeout_seconds: Optional[int] = None):
+    def http_post(self, endpoint: str, params={}, data={}, files={}, additional_headers={}, timeout_seconds: Optional[int] = None):
     
+        endpoint = endpoint.removesuffix('/').removeprefix('/')
+        url = f"{self.base_url}/api/{HttpClient.api_version()}/{endpoint}"
+
         try:
             res = requests.post(
-                self.base_url + url,
+                url,
                 params=params,
                 json=data,
                 headers={**self.headers, **additional_headers},
