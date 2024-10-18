@@ -73,3 +73,28 @@ class HttpClient:
         res.raise_for_status()
 
         return res.json()
+    
+    def http_post(self, url, params={}, data={}, files={}, additional_headers={}, timeout_seconds: Optional[int] = None):
+    
+        try:
+            res = requests.post(
+                self.base_url + url,
+                params=params,
+                json=data,
+                headers={**self.headers, **additional_headers},
+                verify=self.verify,
+                files=files,
+                timeout=timeout_seconds
+            )
+        except requests.exceptions.Timeout:
+            raise Exception("Request took too long. Increase timeout?")
+        
+        res.raise_for_status()
+        
+        if res.content:
+            try:
+               return res.json()
+            except:
+                return res.text
+        else:
+            return None

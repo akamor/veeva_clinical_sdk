@@ -24,4 +24,10 @@ class VeevaClinical:
                     raise Exception('Failed to retrieve documents')
             
             files = result['documents']
-            return [VeevaDocument(file['document']['filename__v'], file['document']['id'], self.client) for file in files]        
+            return [VeevaDocument(file['document']['filename__v'], file['document']['id'], self.client) for file in files]
+        
+
+    def upload_file(self, file: bytes, file_name: str, overwrite: Optional[bool] = True):
+        data = {'kind':'file', 'path':f'textual_staging/{file_name}', 'overwrite': overwrite}
+        return self.client.http_post('/services/file_staging/items',data=data, files={'file': file})
+        

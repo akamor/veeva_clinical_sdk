@@ -11,4 +11,3 @@ class VeevaDocument:
     def download(self) -> bytes:
         with requests.Session() as session:
             return self.client.http_get_file(self.doc_id, session)
-            
