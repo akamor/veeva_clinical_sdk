@@ -106,7 +106,7 @@ class HttpClient:
         else:
             return None
 
-    def pretty_print_POST(self, req):
+    def pretty_print_post(self, req):
         """
         At this point it is completely built and ready
         to be fired; it is "prepared".
