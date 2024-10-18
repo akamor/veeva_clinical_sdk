@@ -28,6 +28,6 @@ class VeevaClinical:
         
 
     def upload_file(self, file: bytes, file_name: str, overwrite: Optional[bool] = True):
-        params = {'kind':'file', 'path':f'textual_staging/{file_name}', 'overwrite': overwrite, 'file': file}
-        return self.client.http_post('/services/file_staging/items',params=params, additional_headers={'Content-Type':'multipart/form-data', 'Accept':'application/json'})
+        params = {'kind':'file', 'path':f'textual_staging/{file_name}', 'overwrite': overwrite}
+        return self.client.http_post('/services/file_staging/items',params=params, files={'file': file}, additional_headers={'Content-Type':'multipart/form-data', 'Accept':'application/json'})
         
