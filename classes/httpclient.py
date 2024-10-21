@@ -1,6 +1,7 @@
 from typing import Optional
 import requests
 from urllib3.exceptions import InsecureRequestWarning
+from requests_toolbelt.utils import dump
 
 requests.packages.urllib3.disable_warnings(  # type: ignore
     category=InsecureRequestWarning
@@ -91,7 +92,7 @@ class HttpClient:
     
     def http_post(self, endpoint: str, params={}, data={}, files={}, additional_headers={}, timeout_seconds: Optional[int] = None):
     
-        print(data)
+    
         endpoint = endpoint.removesuffix('/').removeprefix('/')
         url = f"{self.base_url}/api/{HttpClient.api_version()}/{endpoint}"
 
@@ -108,6 +109,10 @@ class HttpClient:
         except requests.exceptions.Timeout:
             raise Exception("Request took too long. Increase timeout?")
         
+        data = dump.dump_all(res)
+        print(data.decode('utf-8'))
+
+
         res.raise_for_status()
         
         if res.content:
