@@ -27,7 +27,19 @@ class VeevaClinical:
             return [VeevaDocument(file['document']['filename__v'], file['document']['id'], self.client) for file in files]
         
 
-    def upload_file(self, file: bytes, file_name: str, overwrite: Optional[bool] = True):
+    def upload_file(self, file: bytes, file_name: str, overwrite: Optional[bool] = True):        
+        # create folder if not exists
+        try:
+            payload = {
+                'kind': (None,'folder'),
+                'path': 'textual_staging',
+                'overwrite': False
+            }
+            folder_creation_response = self.client.http_post('/services/file_staging/items', files=payload)
+            print(folder_creation_response)
+        except:  # noqa: E722
+            pass
+        
         file_size_in_bytes = len(file)
         files = {
             'path': (None, f'textual_staging/{file_name}'),
