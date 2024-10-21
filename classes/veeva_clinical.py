@@ -37,8 +37,8 @@ class VeevaClinical:
             }
             folder_creation_response = self.client.http_post('/services/file_staging/items', files=payload)
             print(folder_creation_response)
-        except:  # noqa: E722
-            pass
+        except Exception as e:  # noqa: E722
+            print(e)
         
         file_size_in_bytes = len(file)
         files = {
