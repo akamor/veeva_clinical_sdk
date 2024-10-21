@@ -28,11 +28,8 @@ class VeevaClinical:
         
 
     def upload_file(self, file: bytes, file_name: str, overwrite: Optional[bool] = True):
-        files = {
-            "kind": "file",
-            "path": f'textual_staging/{file_name}',
-            #"overwrite": overwrite,
-            "file": (file_name, file),
-        }
-        return self.client.http_post('/services/file_staging/items', files=files)
+        file_size_in_bytes = len(file)
+        data = {'path': f'textual_staging/{file_name}','size': file_size_in_bytes, 'overwrite': overwrite}
+        response = self.client.http_post('/services/file_staging/upload', data=data)
+        print(response)
         
