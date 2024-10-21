@@ -91,7 +91,7 @@ class HttpClient:
     
     def http_post(self, endpoint: str, params={}, data={}, files={}, additional_headers={}, timeout_seconds: Optional[int] = None):
     
-    
+        print(data)
         endpoint = endpoint.removesuffix('/').removeprefix('/')
         url = f"{self.base_url}/api/{HttpClient.api_version()}/{endpoint}"
 
