@@ -75,6 +75,21 @@ class HttpClient:
 
         return res.json()
     
+    def http_delete(self, endpoint: str, params={}):
+        
+        endpoint = endpoint.removesuffix('/').removeprefix('/')
+        url = f"{self.base_url}/api/{HttpClient.api_version()}/{endpoint}"
+        
+        res = requests.delete(
+            url, params=params, headers=self.headers, verify=self.verify
+        )
+        res.raise_for_status()
+
+        if res.content:
+            return res.json()
+        else:
+            return None
+    
     def http_post(self, endpoint: str, params={}, data={}, files={}, additional_headers={}, timeout_seconds: Optional[int] = None):
     
     

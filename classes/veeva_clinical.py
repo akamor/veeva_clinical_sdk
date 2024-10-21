@@ -31,5 +31,6 @@ class VeevaClinical:
         file_size_in_bytes = len(file)
         data = {'path': f'textual_staging/{file_name}','size': file_size_in_bytes, 'overwrite': overwrite}
         response = self.client.http_post('/services/file_staging/upload', data=data)
-        print(response)
-        
+    
+    def cancel_upload(self, resumable_session_id: str):
+        self.client.http_delete(f'/services/file_staging/upload/{resumable_session_id}')
