@@ -29,9 +29,12 @@ class VeevaClinical:
 
     def upload_file(self, file: bytes, file_name: str, overwrite: Optional[bool] = True):
         file_size_in_bytes = len(file)
-        data = {'path': f'textual_staging/{file_name}','size': file_size_in_bytes, 'overwrite': overwrite}
-        print(data)
-        return self.client.http_post('/services/file_staging/upload', data=data, additional_headers={'Content-Type':'application/json'})
+        files = {
+            'path': (None, f'textual_staging/{file_name}'),
+            'size': (None, file_size_in_bytes),
+            'overwrite': (None, overwrite)
+        }
+        return self.client.http_post('/services/file_staging/upload', files=files, additional_headers={'Content-Type':'multipart/form-data'})
     
     def cancel_upload(self, resumable_session_id: str):
         self.client.http_delete(f'/services/file_staging/upload/{resumable_session_id}')
