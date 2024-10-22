@@ -41,12 +41,21 @@ class VeevaClinical:
             print(e)
         
         file_size_in_bytes = len(file)
+        path = f'textual_staging/{file_name}'
         files = {
-            'path': (None, f'textual_staging/{file_name}'),
+            'path': (None, path),
             'size': (None, file_size_in_bytes),
             'overwrite': (None, overwrite)
         }
-        return self.client.http_post('/services/file_staging/upload', files=files)
+        self.client.http_post('/services/file_staging/upload', files=files)
+
+        #now create a file, references the staging file
+        create_payload = {
+            'file': (None, path),
+            'name__v': file_name,
+            'type__v': 'Redacted File'
+        }
+        return self.client.http_post('/objects/documents', files = create_payload)
     
     def cancel_upload(self, resumable_session_id: str):
         self.client.http_delete(f'/services/file_staging/upload/{resumable_session_id}')
