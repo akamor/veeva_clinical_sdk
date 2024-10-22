@@ -52,9 +52,9 @@ class VeevaClinical:
         #now create a file, references the staging file
         create_payload = {
             'file': (None, path),
-            'name__v': file_name,
-            'type__v': 'Redacted File',
-            'lifecycle__v': 'Redacted File'
+            'name__v': (None, file_name),
+            'type__v': (None, 'Redacted File'),
+            'lifecycle__v': (None, 'Redacted File')
         }
         return self.client.http_post('/objects/documents', files = create_payload)
     
