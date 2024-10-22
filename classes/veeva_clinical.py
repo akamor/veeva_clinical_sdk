@@ -54,7 +54,7 @@ class VeevaClinical:
             'file': (None, path),
             'name__v': (None, file_name),
             'type__v': (None, 'Redacted File'),
-            'lifecycle__v': (None, 'Redacted File')
+            'lifecycle__v': (None, 'Base Doc Lifecycle')
         }
         return self.client.http_post('/objects/documents', files = create_payload)
     
