@@ -27,7 +27,7 @@ class VeevaClinical:
             return [VeevaDocument(file['document']['filename__v'], file['document']['id'], self.client) for file in files]
         
 
-    def upload_file(self, file: bytes, file_name: str, overwrite: Optional[bool] = True):        
+    def upload_file(self, file: bytes, file_name: str, overwrite: Optional[bool] = True, creation_params: Optional[dict]={}):        
         # create folder if not exists
         try:
             payload = {
@@ -53,10 +53,11 @@ class VeevaClinical:
         create_payload = {
             'file': (None, path),
             'name__v': (None, file_name),
-            'type__v': (None, 'Trial Management'),
-            'lifecycle__v': (None, 'Base Doc Lifecycle'),
-            'study__v': (None, 'Test_protocol_111')
         }
+
+        for key in creation_params:
+            create_payload[key]=(None, creation_params[key])
+
         return self.client.http_post('/objects/documents', files = create_payload)
     
     def cancel_upload(self, resumable_session_id: str):
