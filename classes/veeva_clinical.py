@@ -32,8 +32,8 @@ class VeevaClinical:
         try:
             payload = {
                 'kind': (None,'folder'),
-                'path': 'textual_staging',
-                'overwrite': False
+                'path': (None, 'textual_staging'),
+                'overwrite': (None, False)
             }
             folder_creation_response = self.client.http_post('/services/file_staging/items', files=payload)
             print(folder_creation_response)
