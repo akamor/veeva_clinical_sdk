@@ -122,3 +122,36 @@ class HttpClient:
                 return res.text
         else:
             return None
+        
+    def http_put(self, endpoint: str, params={}, data={}, files={}, additional_headers={}, timeout_seconds: Optional[int] = None):
+    
+    
+        endpoint = endpoint.removesuffix('/').removeprefix('/')
+        url = f"{self.base_url}/api/{HttpClient.api_version()}/{endpoint}"
+
+        try:
+            res = requests.put(
+                url,
+                params=params,
+                json=data,
+                headers={**self.headers, **additional_headers},
+                verify=self.verify,
+                files=files,
+                timeout=timeout_seconds
+            )
+        except requests.exceptions.Timeout:
+            raise Exception("Request took too long. Increase timeout?")
+        
+        data = dump.dump_all(res)
+        print(data.decode('utf-8'))
+
+
+        res.raise_for_status()
+        
+        if res.content:
+            try:
+               return res.json()
+            except:
+                return res.text
+        else:
+            return None

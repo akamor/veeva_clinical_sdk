@@ -47,7 +47,19 @@ class VeevaClinical:
             'size': (None, file_size_in_bytes),
             'overwrite': (None, overwrite)
         }
-        self.client.http_post('/services/file_staging/upload', files=files)
+        create_upload_session_response = self.client.http_post('/services/file_staging/upload', files=files)
+        session_id = create_upload_session_response['id']
+
+        #upload to session, can't upload more than 50mb at once. if larger we'll need to loop through file bytes and make multiple calls
+        files = {
+            "file": (file_name, file, "application/octet-stream"),
+        }
+        self.client.http_put(f'/services/file_staging/upload/{session_id}', files=files)
+
+
+        #close upload session
+        self.client.http_post(f'/services/file_staging/upload/{session_id}')
+
 
         #now create a file, references the staging file
         create_payload = {
