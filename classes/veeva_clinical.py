@@ -48,7 +48,7 @@ class VeevaClinical:
             'overwrite': (None, overwrite)
         }
         create_upload_session_response = self.client.http_post('/services/file_staging/upload', files=files)
-        session_id = create_upload_session_response['id']
+        session_id = create_upload_session_response['data']['id']
 
         #upload to session, can't upload more than 50mb at once. if larger we'll need to loop through file bytes and make multiple calls
         files = {
