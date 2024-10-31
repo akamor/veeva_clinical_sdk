@@ -76,5 +76,6 @@ class VeevaClinical:
         self.client.http_delete(f'/services/file_staging/upload/{resumable_session_id}')
 
     def list_upload_session(self) -> List[str]:
-        response = self.client.http_get('/services/file_staging/upload')
-        return [session['id'] for session in response['data']]
+        with requests.Session() as session:
+            response = self.client.http_get('/services/file_staging/upload', session)
+            return [session['id'] for session in response['data']]
