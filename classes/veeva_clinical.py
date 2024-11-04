@@ -30,6 +30,19 @@ class VeevaClinical:
             return [VeevaDocument(file['document']['filename__v'], file['document']['id'], self.client) for file in files]
         
 
+    def upload_file2(self, file: io.BufferedReader, file_name: str, overwrite: Optional[bool] = True, creation_params: Optional[dict]={}):        
+        #now create a file, references the staging file
+        create_payload = {
+            'file': (file_name, file, "application/octet-stream"),
+            'name__v': (None, file_name),
+        }
+
+        for key in creation_params:
+            create_payload[key]=(None, creation_params[key])
+
+        return self.client.http_post('/objects/documents', files = create_payload)
+
+
     def upload_file(self, file: io.BufferedReader, file_name: str, overwrite: Optional[bool] = True, creation_params: Optional[dict]={}):        
         # create folder if not exists
         try:
@@ -40,12 +53,12 @@ class VeevaClinical:
             }
             folder_creation_response = self.client.http_post('/services/file_staging/items', files=payload)
             print(folder_creation_response)
-        except Exception as e:  # noqa: E722
-            print(e)
+        except:  # noqa: E722
+            pass
         
         
         file_size_in_bytes = os.fstat(file.fileno()).st_size
-        
+
         path = f'textual_staging/{file_name}'
         files = {
             'path': (None, path),
