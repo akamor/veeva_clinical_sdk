@@ -27,7 +27,7 @@ class VeevaClinical:
                     raise Exception('Failed to retrieve documents')
             
             files = result['documents']
-            return [VeevaDocument(file['document']['filename__v'], file['document']['id'], self.client) for file in files]
+            return [VeevaDocument(file['document']['name__v'], file['document']['filename__v'], file['document']['id'], self.client) for file in files]
         
 
     def upload_file(self, file: io.BufferedReader, file_name: str, overwrite: Optional[bool] = True, creation_params: Optional[dict]={}):        

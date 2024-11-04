@@ -3,8 +3,9 @@ from classes.httpclient import HttpClient
 
 
 class VeevaDocument:
-    def __init__(self, name: str, doc_id: str, client: HttpClient):
+    def __init__(self, name: str, file_name: str, doc_id: str, client: HttpClient):
         self.name = name
+        self.file_name = file_name
         self.doc_id = doc_id
         self.client = client
 
