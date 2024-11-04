@@ -110,9 +110,6 @@ class HttpClient:
             raise Exception("Request took too long. Increase timeout?")
         
         data = dump.dump_all(res)
-        print(data.decode('utf-8'))
-
-
         res.raise_for_status()
         
         if res.content:
