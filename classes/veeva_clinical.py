@@ -30,11 +30,11 @@ class VeevaClinical:
             return [VeevaDocument(file['document']['name__v'], file['document']['filename__v'], file['document']['id'], self.client) for file in files]
         
 
-    def upload_file(self, file: io.BufferedReader, file_name: str, overwrite: Optional[bool] = True, creation_params: Optional[dict]={}):        
+    def upload_file(self, file: io.BufferedReader, object_name: str, file_name: str, overwrite: Optional[bool] = True, creation_params: Optional[dict]={}):        
         #now create a file, references the staging file
         create_payload = {
             'file': (file_name, file, "application/octet-stream"),
-            'name__v': (None, file_name),
+            'name__v': (None, object_name),
         }
 
         for key in creation_params:
