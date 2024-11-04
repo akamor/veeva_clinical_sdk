@@ -1,5 +1,8 @@
-from typing import Optional, List
+import os
 import requests
+import io
+
+from typing import Optional, List
 from classes.veeva_document import VeevaDocument
 from classes.httpclient import HttpClient
 
@@ -27,7 +30,7 @@ class VeevaClinical:
             return [VeevaDocument(file['document']['filename__v'], file['document']['id'], self.client) for file in files]
         
 
-    def upload_file(self, file: bytes, file_name: str, overwrite: Optional[bool] = True, creation_params: Optional[dict]={}):        
+    def upload_file(self, file: io.BufferedReader, file_name: str, overwrite: Optional[bool] = True, creation_params: Optional[dict]={}):        
         # create folder if not exists
         try:
             payload = {
@@ -40,7 +43,9 @@ class VeevaClinical:
         except Exception as e:  # noqa: E722
             print(e)
         
-        file_size_in_bytes = len(file)
+        
+        file_size_in_bytes = os.fstat(file.fileno()).st_size
+        
         path = f'textual_staging/{file_name}'
         files = {
             'path': (None, path),
